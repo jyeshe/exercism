@@ -7,27 +7,11 @@ get_norm_score(Score) -> Score rem 256.
 
 allergies(Score) -> 
     NormScore = get_norm_score(Score),
-    RefScores = get_ref_scores(),
-    AddPositiveFun = fun ({K,V}, PositiveList) -> 
-            if 
-                (NormScore band V) == V ->
-                    [K | PositiveList];
-                true ->
-                    PositiveList
-            end
-        end,
-    lists:foldl(AddPositiveFun, [], RefScores).
-
+    [PositiveAllergen || {PositiveAllergen, SubstScore} <- get_ref_scores(), SubstScore band NormScore == SubstScore].
 
 is_allergic_to(Substance, Score) -> 
     NormScore = get_norm_score(Score),
-    RefScores = get_ref_scores(),
-    FindRes = lists:keyfind(Substance, 1, RefScores),
-
-    if
-        FindRes == false ->
-            undefined;
-        true ->
-            {_K, SubstScore} = FindRes,
-            (NormScore band SubstScore) == SubstScore
-    end.
+    FindList = [PositiveAllergen || 
+        {PositiveAllergen, SubstScore} <- get_ref_scores(), Substance == PositiveAllergen, SubstScore band NormScore == SubstScore],
+    FindList /= [].
+    
