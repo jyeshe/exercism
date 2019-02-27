@@ -9,12 +9,6 @@ map_nucleotide(Nucleotide) ->
         $T -> $A;
         $A -> $U
     end.
-
-rna_sequence([], RnaSeq) -> RnaSeq;
-
-rna_sequence([Nucleotide | Strand], RnaSeq) ->
-    RnaComplement = map_nucleotide(Nucleotide),
-    rna_sequence(Strand, RnaSeq ++ [RnaComplement]).
     
 to_rna(Strand) -> 
-    rna_sequence(Strand, []).
+    [map_nucleotide(Nucleotide) || Nucleotide <- Strand ].
