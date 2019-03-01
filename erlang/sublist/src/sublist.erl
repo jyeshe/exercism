@@ -17,23 +17,18 @@ is_sublist(L1 = [E1 | _ ], L2 = [ _ | Tail2]) ->
 is_superlist([], []) -> true;
 is_superlist(L1, L2) -> is_sublist(L2,L1).
 
-relation_or_unequal(Bool, Relation) ->
-    if
-        not Bool -> 
-            unequal;
-        true -> 
-            Relation
-    end.
+unequal_or_relation(false, _) -> unequal;
+unequal_or_relation(true, Relation) -> Relation.
 
-relation(L1, L2) -> 
+relation(L1, L2) ->
     if 
         % test for sublist
         length(L1) < length(L2) ->
-            relation_or_unequal(is_sublist(L1, L2), sublist);
+            unequal_or_relation(is_sublist(L1, L2), sublist);
         % test for superlist 
         length(L1) > length(L2) ->
-            relation_or_unequal(is_superlist(L1, L2), superlist);
+            unequal_or_relation(is_superlist(L1, L2), superlist);
         % equal length
         true ->
-           relation_or_unequal(L1 == L2, equal)
+           unequal_or_relation(L1 == L2, equal)
     end.
