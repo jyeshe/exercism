@@ -20,7 +20,7 @@ defmodule Queens do
     end
   end
 
-  @line_col_range 0..7
+  @row_col_range 0..7
 
   @doc """
   Gives a string representation of the board with
@@ -28,24 +28,24 @@ defmodule Queens do
   """
   @spec to_string(Queens.t()) :: String.t()
   def to_string(queens) do
-    {bline, bcol} = queens.black
-    {wline, wcol} = queens.white
+    {b_row, b_col} = queens.black
+    {w_row, w_col} = queens.white
 
-    board_lines =
-      for line <- @line_col_range do
-        line_list =
-          for col <- @line_col_range do
+    board_rows_str =
+      for row <- @row_col_range do
+        row_list =
+          for col <- @row_col_range do
             cond do
-              line == bline and col == bcol -> "B"
-              line == wline and col == wcol -> "W"
+              row == b_row and col == b_col -> "B"
+              row == w_row and col == w_col -> "W"
               true -> "_"
             end
           end
 
-        Enum.join(line_list, " ")
+        Enum.join(row_list, " ")
       end
 
-    Enum.join(board_lines, "\n")
+    Enum.join(board_rows_str, "\n")
   end
 
   @doc """
@@ -53,21 +53,21 @@ defmodule Queens do
   """
   @spec can_attack?(Queens.t()) :: boolean
   def can_attack?(queens) do
-    {bline, bcol} = queens.black
-    {wline, wcol} = queens.white
+    {b_row, b_col} = queens.black
+    {w_row, w_col} = queens.white
 
 
-    bline == wline or bcol == wcol or same_diagonal(queens.black, queens.white)
+    b_row == w_row or b_col == w_col or same_diagonal(queens.black, queens.white)
   end
 
-  defp same_diagonal({line1, col1}, {line2, col2}) do
-    diagonals = Enum.flat_map(@line_col_range,
-      fn line ->
-        line_diff = abs(line - line1)
+  defp same_diagonal({row1, col1}, {row2, col2}) do
+    diagonals = Enum.flat_map(@row_col_range,
+      fn row ->
+        row_diff = abs(row - row1)
 
-        [{line, col1-line_diff}, {line, col1+line_diff}]
+        [{row, col1-row_diff}, {row, col1+row_diff}]
       end)
 
-    nil != Enum.find(diagonals, &(&1 == {line2, col2}))
+    nil != Enum.find(diagonals, &(&1 == {row2, col2}))
   end
 end
