@@ -56,7 +56,6 @@ defmodule Queens do
     {b_row, b_col} = queens.black
     {w_row, w_col} = queens.white
 
-
     b_row == w_row or b_col == w_col or same_diagonal(queens.black, queens.white)
   end
 

@@ -23,7 +23,6 @@ defmodule BinarySearchTree do
     %{tree | right: insert(tree.right, data)}
   end
 
-
   @doc """
   Traverses the Binary Search Tree in order and returns a list of each node's data.
   """
