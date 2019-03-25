@@ -20,7 +20,7 @@ defmodule SecretHandshake do
   """
   @spec commands(code :: integer) :: list(String.t())
   def commands(code) when (code &&& 0b10000) == 0b10000 do
-    do_commands(code, :lists.reverse(@codelist))
+    do_commands(code, Enum.reverse(@codelist))
   end
   def commands(code) do
     do_commands(code, @codelist)
