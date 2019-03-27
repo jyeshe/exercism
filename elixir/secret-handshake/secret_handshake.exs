@@ -29,5 +29,4 @@ defmodule SecretHandshake do
   defp do_commands(code, list) do
     for {secret, action} <- list, (secret &&& code) == secret, do: action
   end
-
 end
