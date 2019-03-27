@@ -9,15 +9,14 @@ defmodule StringSeries do
   def slices(s, size) do
     length = String.length(s)
 
-    cond do
-      length < size ->
-        []
-      true ->
-        last_index = length-size
+    if length < size do
+      []
+    else
+      last_index = length-size
 
-        for index <- 0..last_index do
-          String.slice(s, index, size)
-        end
+      for index <- 0..last_index do
+        String.slice(s, index, size)
+      end
     end
   end
 end
