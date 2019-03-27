@@ -28,25 +28,21 @@ defmodule ProteinTranslation do
     # splits rna sequence into list of codons (each codon being a list of 3 graphemes)
     codons = String.splitter(rna, "", trim: true) |> Enum.chunk_every(3)
 
-    {proteins, _stopped} = Enum.flat_map_reduce(codons, false,
-      fn codon_in_list, stopped ->
-        if not stopped do
-          codon = Enum.join(codon_in_list) # e.g ["U", "A", "G"] => "UAG"
-          protein = @codon_protein_map[codon]
+    proteins = Enum.reduce_while(codons, [],
+      fn codon_in_list, acc ->
+        codon = Enum.join(codon_in_list) # e.g ["U", "A", "G"] => "UAG"
+        protein = @codon_protein_map[codon]
 
-          cond do
-            protein != "STOP" ->
-              # valid protein
-              {[protein], false}
-            protein == nil ->
-               # invalidates rna sequence
-              {[nil], false}
-            true ->
-              # == "STOP"
-              {[], true}
-          end
-        else
-          {[], true}
+        cond do
+          protein != "STOP" ->
+            # valid protein
+            {:cont, acc ++ [protein]}
+          protein == nil ->
+            # invalidates rna sequence
+            {:halt, [nil]}
+          true ->
+            # == "STOP"
+            {:halt, acc}
         end
       end)
 
