@@ -23,7 +23,7 @@ defmodule Luhn do
   end
 
   # Invalidates sum for any other char
-  defp luhn_checksum([_ | _], _, _), do: -1
+  defp luhn_checksum([_letter | _], _, _), do: -1
 
   defp sum_digit(digit_int, index, sum) when rem(index, 2) == 0, do: sum + digit_int
 
