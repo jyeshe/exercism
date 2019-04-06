@@ -6,7 +6,7 @@ defmodule Bob do
   def is_yelling(""), do: false
   def is_yelling(string) do
     words = Regex.scan(~r/\p{L}+/u, string)
-    string == String.upcase(string) and length(words) > 0
+    length(words) > 0 and string == String.upcase(string)
   end
 
   def hey(input) do

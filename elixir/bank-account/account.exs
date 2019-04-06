@@ -112,7 +112,7 @@ defmodule BankAccount do
 
   # Returns Registry :via tuple with a unique random name
   defp create_registry_via_tuple() do
-    account_id = "BankAccount" <> Integer.to_string(Enum.random(1..1000000))
+    account_id = "BankAccount" <> Float.to_string(:rand.uniform())
     reg_name_key = {BankAccount.Registry, account_id}
 
     {:via, Registry, reg_name_key}
