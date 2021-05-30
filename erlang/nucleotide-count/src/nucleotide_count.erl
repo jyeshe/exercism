@@ -2,7 +2,7 @@
 
 -export([count/2, nucleotide_counts/1]).
 
--define(IS_INVALID(N), N /= hd("A") andalso N /= hd("C") andalso N /= hd("G") andalso N /= hd("T")).
+-define(IS_INVALID(N), N /= $A andalso N /= $C andalso N /= $G andalso N /= $T).
 
 count([], _Nucleotide) -> 0;
 count(Strand, [Nucleotide | _]) -> do_count(Strand, Nucleotide, 0).
