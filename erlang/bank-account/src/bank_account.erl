@@ -12,9 +12,8 @@
 %%
 -spec balance(pid()) -> non_neg_integer() | {error, account_closed}.
 balance(Pid) ->
-    IsAccountClosed = not is_process_alive(Pid),
-    if
-        IsAccountClosed ->
+    case is_process_alive(Pid) of 
+        false ->
             {error, account_closed};
         true ->
             gen_server:call(Pid, {balance})
@@ -46,8 +45,7 @@ deposit(Pid, Amount) ->
     Amount > 0 andalso gen_server:cast(Pid, {deposit, Amount}) == ok.
 
 -spec withdraw(pid(), non_neg_integer()) -> integer().
-withdraw(_Pid, Amount) when Amount =< 0->
-    0;
+withdraw(_Pid, Amount) when Amount =< 0 -> 0;
 withdraw(Pid, Amount)->
     gen_server:call(Pid, {withdraw, Amount}).
 
